@@ -4,32 +4,18 @@ version: "3.8"
 services:  
 # item-app service
   item-app:
+# pull image from github packages / username / packages / version
+    image: ghcr.io/mishbahulm/item-app:v1
+# ports expost list
+    ports:
+# port expost from 8080 (container) to 80 (host)
+      - 80:8080
 # item-app service are depends on service(s) create first from this list
     depends_on:
 # item-app service is depends on item-db service
       - item-db
 # always restart the container if it stops
     restart: always
-# pull image from github packages / username / packages / version
-    image: ghcr.io/mishbahulm/item-app:v1
-# command when container is launched
-    command: sh -c "npm install --production --unsafe-perm && npm run build"
-# ports expost list
-    ports:
-# port expost from 8080 (container) to 80 (host)
-      - 80:8080
-# container working directory
-    working_dir: /app
-# persistence storage volume type
-    volumes:
-# current host directory from /app in container
-      - ./:/app
-# list environment variable
-    environment:
-# node server production environment
-      NODE_ENV: production
-# database host is item-db service
-      DB_HOST: item-db 
 # item-db service
   item-db:
 # pull image from docker hub
