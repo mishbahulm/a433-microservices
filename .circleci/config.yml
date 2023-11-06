@@ -7,13 +7,10 @@ executors:
   go:
     docker:
       - image: cimg/go:1.21.3
-  ci:
-    docker:
-      - image: circleci/go@1.9.0
 
 jobs:
   lint-dockerfile:
-    executor: docker
+    executor: go
     steps:
       - checkout
       - setup_remote_docker
@@ -31,25 +28,18 @@ jobs:
     executor: go
     steps:
       - checkout
-      - setup_remote_docker
-      # :
-      #     docker_layer_caching: false
+      - setup_remote_docker:
+          docker_layer_caching: false
       - run:
-          name: Build and push
+          name: Build and push          
+          # command: |
+          #   docker build -t munirm3/karsajobs:latest .            
+          #   echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
+          #   docker push munirm3/karsajobs:latest
           command: |
-            docker build -t munirm3/karsajobs:latest .
-            echo $DOCKER_PASSWORD | docker login -u munirm3 --password-stdin
-            docker push munirm3/karsajobs:latest
-      #     name: Login to github
-      #     command: echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
-      #     # command: docker login -u munirm3
-      # - run:
-      #     name: Build the image App
-      #     command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
-      #     # command: ./build_push_image_karsajobs.sh
-      # - run:
-      #     name: Push the image
-      #     command: docker push ghcr.io/mishbahulm/karsajobs:latest
+            build -t ghcr.io/mishbahulm/karsajobs:latest 
+            echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
+            docker push ghcr.io/mishbahulm/karsajobs:latest
 
 workflows:
   version: 2
@@ -58,36 +48,3 @@ workflows:
       # - lint-dockerfile
       # - test-app
       - build-app-karsajobs
-
-# orbs:
-#   docker: circleci/docker@1.5.0
-# version: 2.1
-# executors:
-#   docker-publisher:
-#     docker: # Each job requires specifying an executor
-#     # (either docker, macos, or machine), see
-#     - image: circleci/node:latest
-# environment:
-#   IMAGE_NAME: munirm3/go-test 
-#   auth:
-#     username: $DOCKERHUB_USERNAME
-#     password: $DOCKERHUB_PASSWORD
-
-# jobs:
-#   publishLatestToHub: 
-#     executor: docker-publisher
-#     steps:
-#       - checkout
-#       - setup_remote_docker
-#       - run: 
-#           name: Publish Docker Image to Docker Hub
-#           command: |
-#             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-#             docker build -t $IMAGE_NAME .
-#             docker push $IMAGE_NAME:latest
-
-# workflows:
-#   version: 2
-#   build-master:
-#     jobs:
-#       - publishLatestToHub
