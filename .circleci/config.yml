@@ -7,6 +7,9 @@ executors:
   go:
     docker:
       - image: cimg/go:1.21.3
+  ci:
+    docker:
+      - image: circleci/go@1.9.0
 
 jobs:
   lint-dockerfile:
@@ -25,21 +28,27 @@ jobs:
           name: Test app
           command: go test -v -short --count=1 $(go list ./...)
   build-app-karsajobs:
-    executor: docker
+    executor: ci
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: false
       - run:
-          name: Login to github
-          command: echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
-          # command: docker login -u munirm3
-      - run:
-          name: Build the image App
-          command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
-          # command: ./build_push_image_karsajobs.sh
-      - run:
-          name: Push the image
-          command: docker push ghcr.io/mishbahulm/karsajobs:latest
+          name: Build and push
+          command: |
+            docker build -t munirm3/karsajobs:latest .
+            echo $DOCKER_PASSWORD | docker login -u munirm3 --password-stdin
+            docker push munirm3/karsajobs:latest
+      #     name: Login to github
+      #     command: echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
+      #     # command: docker login -u munirm3
+      # - run:
+      #     name: Build the image App
+      #     command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
+      #     # command: ./build_push_image_karsajobs.sh
+      # - run:
+      #     name: Push the image
+      #     command: docker push ghcr.io/mishbahulm/karsajobs:latest
 
 workflows:
   version: 2
