@@ -1,31 +1,35 @@
-# version: 2.1
+version: 2.1
 
-# workflows:
-#   backend-deploy:
-#     jobs:
-#       - backend
+executors:
+  docker:
+    docker:
+      - image: docker:stable
+  go:
+    docker:
+      - image: cimg/go:1.21.3
 
-# jobs:
-#   backend:
-#     docker:
-#       - image: cimg/go:1.21.3
-#     steps:
-#       - checkout
-#       - run:
-#           name: lint-dockerfile
-#       - run:
-#           name: test-app
-#           command: go test -v -short --count=1 $(go list ./...)
+jobs:
+  lint-dockerfile:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+  test-app:
+    executor: go
+    steps:
+      - checkout
+      - run:
+          name: lint-dockerfile
+      - run:
+          name: test-app
+          command: go test -v -short --count=1 $(go list ./...)
 
-version: '2.1'
-orbs:
-  docker: circleci/docker@2.4.0
 workflows:
-  lint:
+  version: 2
+  backend-deploy:
     jobs:
-      - docker/hadolint:
-          dockerfiles: Dockerfile
-          # executor-class: medium
-          # hadolint-tag: 2.2.0-debian
-          # ignore-rules: DL4005,DL3008
-          # trusted-registries: docker.io,my-company.com:5000
+      - lint-dockerfile
+      - test-app
