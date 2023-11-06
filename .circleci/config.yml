@@ -3,10 +3,10 @@ version: 2.1
 workflows:
   test-deploy:
     jobs:
-      - test
+      - test1
 
 jobs:
-  test:
+  test1:
     docker:
       - image: cimg/go:1.21.3
     steps:
