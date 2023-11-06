@@ -1,12 +1,12 @@
-orbs:
- docker: circleci/docker@1.5.0
+# orbs:
+#  docker: circleci/docker@1.5.0
 
 version: 2.1
 
 executors:
   docker:
-    # docker:
-    #   - image: docker:stable
+    docker:
+      - image: docker:stable
   go:
     docker:
       - image: cimg/go:1.21.3
