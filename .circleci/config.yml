@@ -1,0 +1,13 @@
+version: 2.1
+
+workflows:
+  test-deploy:
+    jobs:
+      - test
+
+jobs:
+  docker:
+      - image: cimg/go:1.21.3
+    steps:
+      - checkout
+      - run: go version
