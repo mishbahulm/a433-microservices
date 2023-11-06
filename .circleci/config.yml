@@ -19,7 +19,7 @@
 
 version: '2.1'
 orbs:
-  docker: circleci/go@1.9.0
+  docker: circleci/docker@2.4.0
 workflows:
   lint:
     jobs:
