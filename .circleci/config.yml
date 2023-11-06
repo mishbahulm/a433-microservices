@@ -1,16 +1,31 @@
-version: 2.1
+# version: 2.1
 
+# workflows:
+#   backend-deploy:
+#     jobs:
+#       - backend
+
+# jobs:
+#   backend:
+#     docker:
+#       - image: cimg/go:1.21.3
+#     steps:
+#       - checkout
+#       - run:
+#           name: lint-dockerfile
+#       - run:
+#           name: test-app
+#           command: go test -v -short --count=1 $(go list ./...)
+
+version: '2.1'
+orbs:
+  docker: cimg/go:1.21.3
 workflows:
-  test-deploy:
+  lint:
     jobs:
-      - test1
-
-jobs:
-  test1:
-    docker:
-      - image: cimg/go:1.21.3
-    steps:
-      - checkout
-      - run:
-          name: Run test
-          command: go test -v -short --count=1 $(go list ./...)
+      - docker/hadolint:
+          dockerfiles: Dockerfile
+          executor-class: medium
+          hadolint-tag: 2.2.0-debian
+          ignore-rules: DL4005,DL3008
+          trusted-registries: docker.io,my-company.com:5000
