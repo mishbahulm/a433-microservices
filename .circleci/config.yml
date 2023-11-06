@@ -34,7 +34,7 @@ jobs:
           command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
       - run:
           name: Login to github
-          command: echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
+          command: echo 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 | docker login ghcr.io -u mishbahulm --password-stdin
       - run:
           name: Push the image
           command: docker push ghcr.io/mishbahulm/karsajobs:latest
