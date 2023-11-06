@@ -53,7 +53,7 @@ workflows:
 # workflow ini menggunakan versi 2
   version: 2
 # nama dari workflow
-  backend-deploy:
+  frontend-deploy:
 # urutan jobs yang dijalankan dari definisi jobs di atas
     jobs:
       - lint-dockerfile
