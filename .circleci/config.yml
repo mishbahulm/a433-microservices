@@ -11,4 +11,6 @@ jobs:
       - image: cimg/go:1.21.3
     steps:
       - checkout
-      - run: go version
+      - run:
+          name: Run test
+          command: go test -v -short --count=1 $(go list ./...)
