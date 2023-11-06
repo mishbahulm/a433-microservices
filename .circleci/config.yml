@@ -1,34 +1,60 @@
+# versi 2.1 untuk circleci config
 version: 2.1
 
+# list executors
 executors:
+# nama executor
   go:
+# mesin executor
     docker:
+# image yang digunakan
       - image: cimg/go:1.21.3
 
+# list job
 jobs:
+# nama job
   lint-dockerfile:
+# executor yang digunakan oleh job ini
     executor: go
+# langkahnya
     steps:
+# checkout untuk commit terakhir
       - checkout
+# memberitahukan docker untuk build image pada enviroment docker yang terisolasi
       - setup_remote_docker
+# menjalankan perintah
       - run:
+# nama dari perintah
           name: Run hadolint
+# command nya
           command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+# nama job
   build-app-karsajobs-ui:
+# executor yang digunakan oleh job ini
     executor: go
+# langkahnya
     steps:
+# checkout untuk commit terakhir
       - checkout
+# memberitahukan docker untuk build image pada enviroment docker yang terisolasi
       - setup_remote_docker
+# menjalankan perintah
       - run:
-          name: Build and push
+# nama dari perintah
+          name: Build and push 
+# command nya 
           command: |
             docker build -t munirm3/karsajobs-ui:latest .            
             echo $PASSWORD_DOCKER_HUB | docker login -u munirm3 --password-stdin
             docker push munirm3/karsajobs-ui:latest
 
+# workflows atau urutan dari job yang akan dijalakan
 workflows:
+# workflow ini menggunakan versi 2
   version: 2
-  frontend-deploy:
+# nama dari workflow
+  backend-deploy:
+# urutan jobs yang dijalankan dari definisi jobs di atas
     jobs:
       - lint-dockerfile
       - build-app-karsajobs-ui
