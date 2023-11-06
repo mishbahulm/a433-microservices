@@ -19,7 +19,7 @@
 
 version: '2.1'
 orbs:
-  docker: cimg/go:1.21.3
+  docker: circleci/docker@x.y.z
 workflows:
   lint:
     jobs:
