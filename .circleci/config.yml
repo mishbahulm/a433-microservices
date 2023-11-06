@@ -22,8 +22,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: lint-dockerfile
-      - run:
           name: Test app
           command: go test -v -short --count=1 $(go list ./...)
 
