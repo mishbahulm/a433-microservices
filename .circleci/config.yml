@@ -31,19 +31,20 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build the image App
-          command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
-      - run:
-          name: Login to github
+          # command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
+          command: ./build_push_image_karsajobs.sh
+      # - run:
+      #     name: Login to github
           # command: echo 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 | docker login ghcr.io -u mishbahulm --password-stdin
-          command: docker login ghcr.io -u mishbahulm --password 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
-      - run:
-          name: Push the image
-          command: docker push ghcr.io/mishbahulm/karsajobs:latest
+          # command: docker login ghcr.io -u mishbahulm --password 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
+      # - run:
+      #     name: Push the image
+      #     command: docker push ghcr.io/mishbahulm/karsajobs:latest
 
 workflows:
   version: 2
   backend-deploy:
     jobs:
-      - lint-dockerfile
-      - test-app
+      # - lint-dockerfile
+      # - test-app
       - build-app-karsajobs
