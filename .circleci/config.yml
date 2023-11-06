@@ -24,6 +24,18 @@ jobs:
       - run:
           name: Test app
           command: go test -v -short --count=1 $(go list ./...)
+  build-app-karsajobs:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build the image App
+          command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
+          name: Login to github
+          command: echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
+          name: Push the image
+          command: docker push ghcr.io/mishbahulm/karsajobs:latest
 
 workflows:
   version: 2
