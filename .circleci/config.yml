@@ -32,8 +32,10 @@ jobs:
       - run:
           name: Build the image App
           command: docker build -t ghcr.io/mishbahulm/karsajobs:latest .
+      - run:
           name: Login to github
           command: echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
+      - run:
           name: Push the image
           command: docker push ghcr.io/mishbahulm/karsajobs:latest
 
@@ -43,3 +45,4 @@ workflows:
     jobs:
       - lint-dockerfile
       - test-app
+      - build-app-karsajobs
