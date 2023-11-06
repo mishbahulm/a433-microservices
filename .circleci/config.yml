@@ -1,9 +1,9 @@
 version: 2.1
 
 executors:
-  docker:
-    docker:
-      - image: docker:stable
+  # docker:
+  #   docker:
+  #     - image: docker:stable
   go:
     docker:
       - image: cimg/go:1.21.3
@@ -28,24 +28,19 @@ jobs:
     executor: go
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
+      - setup_remote_docker
       - run:
           name: Build and push          
-          # command: |
-          #   docker build -t munirm3/karsajobs:latest .            
-          #   echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
-          #   docker push munirm3/karsajobs:latest
           command: |
-            build -t ghcr.io/mishbahulm/karsajobs:latest 
-            echo $PASSWORD_DOCKER_HUB | docker login ghcr.io -u mishbahulm --password-stdin
-            docker push ghcr.io/mishbahulm/karsajobs:latest
+            docker build -t munirm3/karsajobs:latest .            
+            echo $PASSWORD_DOCKER_HUB | docker login -u mishbahulm --password-stdin
+            docker push munirm3/karsajobs:latest
 
 workflows:
   version: 2
   backend-deploy:
     jobs:
-      # - lint-dockerfile
-      # - test-app
+      - lint-dockerfile
+      - test-app
       - build-app-karsajobs
-      
+
