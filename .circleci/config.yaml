@@ -1,0 +1,35 @@
+version: 2.1
+
+executors:
+  go:
+    docker:
+      - image: cimg/go:1.21.3
+
+jobs:
+  lint-dockerfile:
+    executor: go
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+  build-app-karsajobs-ui:
+    executor: go
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build and push
+          command: |
+            docker build -t munirm3/karsajobs-ui:latest .            
+            echo $PASSWORD_DOCKER_HUB | docker login -u munirm3 --password-stdin
+            docker push munirm3/karsajobs-ui:latest
+
+workflows:
+  version: 2
+  frontend-deploy:
+    jobs:
+      - lint-dockerfile
+      - build-app-karsajobs
+
