@@ -31,8 +31,9 @@ jobs:
     executor: ci
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
+      - setup_remote_docker
+      # :
+      #     docker_layer_caching: false
       - run:
           name: Build and push
           command: |
