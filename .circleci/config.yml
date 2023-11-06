@@ -24,7 +24,7 @@ jobs:
       - run:
           name: lint-dockerfile
       - run:
-          name: test-app
+          name: Test app
           command: go test -v -short --count=1 $(go list ./...)
 
 workflows:
