@@ -31,5 +31,4 @@ workflows:
   frontend-deploy:
     jobs:
       - lint-dockerfile
-      - build-app-karsajobs
-
+      - build-app-karsajobs-ui
