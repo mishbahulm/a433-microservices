@@ -28,7 +28,7 @@ jobs:
           name: Test app
           command: go test -v -short --count=1 $(go list ./...)
   build-app-karsajobs:
-    executor: ci
+    executor: go
     steps:
       - checkout
       - setup_remote_docker
