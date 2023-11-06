@@ -6,7 +6,8 @@ workflows:
       - test
 
 jobs:
-  docker:
+  test:
+    docker:
       - image: cimg/go:1.21.3
     steps:
       - checkout
