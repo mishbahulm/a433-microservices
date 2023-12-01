@@ -1,5 +1,5 @@
 # pull image dari docker.io dan label sebagai base image
-FROM node:18-alpine as base
+FROM node:lts-alpine as base
 # working directory
 WORKDIR /src
 # copy file dari local ke working directory
